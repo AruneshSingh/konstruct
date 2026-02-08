@@ -38,21 +38,35 @@
     "prepublishOnly": "npm run build"
   },
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "plugins": [
-      ["@semantic-release/commit-analyzer", {
-        "releaseRules": [
-          { "type": "feat", "release": "patch" },
-          { "breaking": true, "release": "minor" }
-        ]
-      }],
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "releaseRules": [
+            {
+              "type": "feat",
+              "release": "patch"
+            },
+            {
+              "breaking": true,
+              "release": "minor"
+            }
+          ]
+        }
+      ],
       "@semantic-release/release-notes-generator",
       "@semantic-release/npm",
       "@semantic-release/changelog",
       [
         "@semantic-release/git",
         {
-          "assets": ["package.json", "CHANGELOG.md"],
+          "assets": [
+            "package.json",
+            "CHANGELOG.md"
+          ],
           "message": "chore(release): ${nextRelease.version} [skip ci]"
         }
       ],
@@ -69,7 +83,6 @@
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^11.0.6",
     "@semantic-release/npm": "^13.1.4",
@@ -80,6 +93,11 @@
     "tsx": "^4.7.0",
     "typescript": "^5.4.0",
     "vitest": "^2.0.0"
+  },
+  "overrides": {
+    "semantic-release": {
+      "@semantic-release/npm": "$@semantic-release/npm"
+    }
   },
   "engines": {
     "node": ">=18"
