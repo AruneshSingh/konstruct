@@ -38,11 +38,14 @@
     "prepublishOnly": "npm run build"
   },
   "release": {
-    "branches": [
-      { "name": "main", "range": "0.x" }
-    ],
+    "branches": ["main"],
     "plugins": [
-      "@semantic-release/commit-analyzer",
+      ["@semantic-release/commit-analyzer", {
+        "releaseRules": [
+          { "type": "feat", "release": "patch" },
+          { "breaking": true, "release": "minor" }
+        ]
+      }],
       "@semantic-release/release-notes-generator",
       [
         "@semantic-release/npm",
