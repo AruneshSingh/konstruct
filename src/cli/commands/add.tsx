@@ -17,6 +17,7 @@ interface AddOptions {
   user?: boolean;
   path?: string;
   ssh?: boolean;
+  skill?: string[];
 }
 
 type Phase = 'parsing' | 'no-manifest' | 'discovering' | 'selecting' | 'installing' | 'done';
@@ -140,6 +141,20 @@ function AddApp({ source, options: initialOptions }: { source: string; options: 
     if (discovered.length === 0) {
       addMsg('error', 'No SKILL.md files found in that repository.');
       finish();
+      return;
+    }
+
+    if (opts.skill) {
+      const notFound = opts.skill.filter(s => !discovered.some(d => d.name === s));
+      if (notFound.length > 0) {
+        addMsg('error', `Skill(s) not found: ${notFound.join(', ')}`);
+        setSpinnerLabel('');
+        setSkills(discovered);
+        setPhase('selecting');
+        return;
+      }
+      const picks = discovered.filter(d => opts.skill!.includes(d.name));
+      await installPicks(parsedSource, opts, picks, discovered);
       return;
     }
 

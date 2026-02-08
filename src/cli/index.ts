@@ -63,6 +63,7 @@ program
   .option('--user', 'Add as a userSkill (local, never auto-updated)')
   .option('--path <path>', 'Custom installation path')
   .option('-s, --ssh', 'Use SSH for cloning (default: HTTPS with auto-retry on auth failure)')
+  .option('--skill <names...>', 'Install specific skill(s) by name, skipping the selection prompt')
   .action(addCommand);
 
 program

@@ -120,7 +120,7 @@ shim automatically. So `node bin/cli.js` works in both modes without any flag.
 | Command | What it does | Options |
 |---|---|---|
 | `konstruct init` | Creates `skills.json` + `konstruct.config.json` | `-g, --global` Initialize in `~/.konstruct/` instead of current directory |
-| `konstruct add <source>` | Clone (or resolve locally), discover, optionally prompt, install, persist to manifest | `-g, --global` Install globally<br>`--user` Add as userSkill (local, never auto-updated)<br>`--path <path>` Custom installation path<br>`-s, --ssh` Use SSH for cloning |
+| `konstruct add <source>` | Clone (or resolve locally), discover, optionally prompt, install, persist to manifest | `-g, --global` Install globally<br>`--user` Add as userSkill (local, never auto-updated)<br>`--path <path>` Custom installation path<br>`-s, --ssh` Use SSH for cloning<br>`--skill <names...>` Install specific skill(s) by name, skipping the selection prompt |
 | `konstruct install` | Read manifest, install everything (git + user skills). Full bootstrap. | `-g, --global` Install globally<br>`-s, --ssh` Use SSH for cloning |
 | `konstruct update` | Git skills only. Hash-diff local vs remote; only re-copy on actual changes. Prints `+ added`, `~ changed`, `- removed`. | `-g, --global` Update in global directories<br>`-s, --ssh` Use SSH for cloning |
 | `konstruct remove <names...>` | Delete from manifest + best-effort rm from all agent dirs | `-g, --global` Remove from global directories |
@@ -373,6 +373,13 @@ Git operations support both authentication methods:
 - HTTPS with automatic retry on auth failure
 - SSH via `--ssh` flag for all git commands
 - Helpful error messages guide users through auth setup
+
+### Non-Interactive Skill Selection (`--skill` flag)
+`konstruct add` now supports a `--skill` flag for non-interactive usage:
+- `konstruct add anthropics/skills --skill canvas-design` — installs only that skill, no prompt
+- `konstruct add anthropics/skills --skill canvas-design --skill pdf` — installs multiple
+- If a requested skill name isn't found, an error is shown and the interactive MultiSelect is presented as a fallback
+- Useful for scripting and CI/CD pipelines
 
 ### Custom Path Tracking in Manifest
 The manifest now tracks custom installation paths for each skill:

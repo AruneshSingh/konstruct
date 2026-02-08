@@ -20,7 +20,10 @@ npm install -g konstruct
 konstruct init
 
 # Add a skill from GitHub
-konstruct add github:anthropics/skills/skills/canvas-design#main
+konstruct add anthropics/skills
+
+# Add a specific skill from repo
+konstruct add anthropics/skills --skill skill-creator
 
 # Install all skills from skills.json
 konstruct install
