@@ -4,11 +4,11 @@
   "description": "Package manager for AI agent skills",
   "type": "module",
   "license": "MIT",
-  "author": "n3sh",
-  "homepage": "https://github.com/n3sh/konstruct",
+  "author": "aruneshsingh",
+  "homepage": "https://github.com/AruneshSingh/konstruct",
   "repository": {
     "type": "git",
-    "url": "https://github.com/n3sh/konstruct.git"
+    "url": "https://github.com/AruneshSingh/konstruct.git"
   },
   "keywords": [
     "ai",
@@ -28,13 +28,17 @@
     ".": "./dist/index.js"
   },
   "scripts": {
-    "build": "tsup src/cli/index.ts --format esm --out-dir dist",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsup src/cli/index.ts --format esm --out-dir dist",
     "dev": "tsx src/cli/index.ts",
     "start": "tsx src/cli/index.ts",
     "test": "vitest",
     "test:run": "vitest run",
     "type-check": "tsc --noEmit",
-    "prepublishOnly": "npm run build && npm run test:run"
+    "prepublishOnly": "npm run build"
+  },
+  "release": {
+    "branches": ["main"]
   },
   "dependencies": {
     "commander": "^13.0.0",
@@ -47,6 +51,7 @@
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@types/react": "^19.2.13",
+    "semantic-release": "^24.2.9",
     "tsup": "^8.0.0",
     "tsx": "^4.7.0",
     "typescript": "^5.4.0",
