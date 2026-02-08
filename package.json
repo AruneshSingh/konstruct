@@ -38,7 +38,34 @@
     "prepublishOnly": "npm run build"
   },
   "release": {
-    "branches": ["main"]
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
+      [
+        "@semantic-release/exec",
+        {
+          "publishCmd": "npm publish --provenance --access public"
+        }
+      ],
+      "@semantic-release/changelog",
+      [
+        "@semantic-release/git",
+        {
+          "assets": ["package.json", "CHANGELOG.md"],
+          "message": "chore(release): ${nextRelease.version} [skip ci]"
+        }
+      ],
+      "@semantic-release/github"
+    ]
   },
   "dependencies": {
     "commander": "^13.0.0",
@@ -49,6 +76,10 @@
     "simple-git": "^3.27.0"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^7.1.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.6",
     "@types/node": "^22.0.0",
     "@types/react": "^19.2.13",
     "semantic-release": "^24.2.9",
