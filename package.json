@@ -1,6 +1,6 @@
 {
   "name": "konstruct",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Package manager for AI agent skills",
   "type": "module",
   "license": "MIT",
