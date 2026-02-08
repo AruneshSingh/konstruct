@@ -1,6 +1,6 @@
 {
   "name": "konstruct",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Package manager for AI agent skills",
   "type": "module",
   "license": "MIT",
@@ -39,7 +39,7 @@
   },
   "release": {
     "branches": [
-      "main"
+      { "name": "main", "range": "0.x" }
     ],
     "plugins": [
       "@semantic-release/commit-analyzer",
