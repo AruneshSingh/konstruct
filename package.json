@@ -1,6 +1,6 @@
 {
   "name": "konstruct",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Package manager for AI agent skills",
   "type": "module",
   "license": "MIT",
@@ -38,14 +38,25 @@
     "prepublishOnly": "npm run build"
   },
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "plugins": [
-      ["@semantic-release/commit-analyzer", {
-        "releaseRules": [
-          { "type": "feat", "release": "patch" },
-          { "breaking": true, "release": "minor" }
-        ]
-      }],
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "releaseRules": [
+            {
+              "type": "feat",
+              "release": "patch"
+            },
+            {
+              "breaking": true,
+              "release": "minor"
+            }
+          ]
+        }
+      ],
       "@semantic-release/release-notes-generator",
       [
         "@semantic-release/npm",
