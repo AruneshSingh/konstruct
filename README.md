@@ -77,6 +77,18 @@ Configure which agents receive skills so you don't have to specify them every ti
 }
 ```
 
+### Private Skils
+
+Konstruct can install skills from private repositories as long as your local machine is authenticated. HTTPS uses your existing git credentials (e.g. `gh auth login`), or you can use SSH:
+
+```bash
+# Private repo over HTTPS (uses your local git credentials)
+konstruct add github:my-org/private-skills
+
+# Private repo over SSH
+konstruct add github:my-org/private-skills --ssh
+```
+
 ### Global and Project Configuration
 
 Konstruct operates at two scopes. Project-level config lives in your repo and tracks which agents that project uses. Global config lives at `~/.konstruct/` and provides defaults for all projects.
@@ -112,15 +124,13 @@ konstruct add github:org/repo --path /opt/shared-skills
 }
 ```
 
-### Private / Local Skills
+### Local Skills
 
-Add skills from your local filesystem with `--user`. These are kept in a separate `userSkills` section of the manifest and are never auto-updated, making them ideal for provvate or in-development skills.
+Add skills from your local filesystem with `--user`. These are kept in a separate `userSkills` section of the manifest and are never auto-updated, making them ideal for private or in-development skills.
 
 ```bash
 konstruct add file:./my-private-skill --user
 ```
-
-### User Skills vs Installed Skills
 
 Skills are separated into two categories:
 
