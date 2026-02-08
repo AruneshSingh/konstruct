@@ -2,6 +2,11 @@
 
 Package manager for AI agent skills. Manages the lifecycle of skill directories — discovery, installation, updating, and removal — across one or more AI agent tool directories.
 
+## Add Skills
+```bash
+npx konstruct add owner/repo
+```
+
 ## Install
 
 ```bash
@@ -27,6 +32,107 @@ konstruct update
 konstruct list
 ```
 
+## Features
+
+### Declarative Manifest
+
+Every project gets a `skills.json` that declares exactly which skills it needs and where they come from. Run `konstruct install` on any machine and get the same setup — no manual steps.
+
+```json
+{
+  "name": "my-project",
+  "version": "1.0.0",
+  "skills": {
+    "canvas-design": {
+      "source": "anthropic/skills/canvas-design#v1.0"
+    },
+    "data-analytics": {
+      "source": "github:company/analytics-repo/skills/analytics#main"
+    }
+  },
+  "userSkills": {
+    "my-local-skill": {
+      "source": "file:./local-skills/my-skill"
+    }
+  }
+}
+```
+
+
+### Default Agents
+
+Configure which agents receive skills so you don't have to specify them every time. Set defaults at the project or global level with `konstruct defaults`, or let them resolve automatically:
+
+1. Project config (`./konstruct.config.json`) agents
+2. Global config (`~/.konstruct/konstruct.config.json`) default agents
+3. Fallback: `claude`
+
+```json
+{
+  "version": 1,
+  "agents": ["claude", "cursor"],
+  "global": {
+    "defaultAgents": ["claude"]
+  }
+}
+```
+
+### Global and Project Configuration
+
+Konstruct operates at two scopes. Project-level config lives in your repo and tracks which agents that project uses. Global config lives at `~/.konstruct/` and provides defaults for all projects.
+
+```bash
+# Project scope (default)
+konstruct init
+konstruct add anthropic/skills/canvas-design#main
+
+# Global scope
+konstruct init -g
+konstruct add -g anthropic/skills/canvas-design#main
+```
+
+Every command supports `-g, --global` to switch between scopes.
+
+### Custom Install Paths
+
+Override where a skill gets installed with `--path`. The path is saved in the manifest so subsequent `konstruct install` and `konstruct update` calls respect it.
+
+```bash
+konstruct add github:org/repo --path /opt/shared-skills
+```
+
+```json
+{
+  "skills": {
+    "repo": {
+      "source": "github:org/repo",
+      "path": "/opt/shared-skills"
+    }
+  }
+}
+```
+
+### Private / Local Skills
+
+Add skills from your local filesystem with `--user`. These are kept in a separate `userSkills` section of the manifest and are never auto-updated, making them ideal for provvate or in-development skills.
+
+```bash
+konstruct add file:./my-private-skill --user
+```
+
+### User Skills vs Installed Skills
+
+Skills are separated into two categories:
+
+|  | Installed Skills | User Skills |
+|---|---|---|
+| **Sources** | GitHub, GitLab, any git URL | Local filesystem only |
+| **Updates** | Auto-updated via `konstruct update` | Never auto-updated |
+| **Use case** | Shared, versioned skills | Private, local, or experimental |
+| **Flag** | (default) | `--user` |
+
+Both types are installed when running `konstruct install`, but `konstruct update` only touches git-based skills.
+
 ## Commands
 
 | Command | Description |
@@ -39,24 +145,14 @@ konstruct list
 | `konstruct list` | List all skills in the current manifest |
 | `konstruct defaults` | View and update default agent preferences |
 
-### Global mode
-
-All commands support `-g, --global` to operate on `~/.konstruct/` instead of the current directory.
-
-```bash
-konstruct init -g          # Set up global config
-konstruct add -g <source>  # Install globally
-konstruct list -g          # List global skills
-```
-
 ### Options
 
 - `-g, --global` — Use global `~/.konstruct/` directory
 - `-s, --ssh` — Use SSH for git cloning (default: HTTPS with auto-retry)
-- `--user` — Add as a userSkill (local, never auto-updated)
+- `--user` — Add as a user skill (local, never auto-updated)
 - `--path <path>` — Custom installation path
 
-## Source formats
+## Source Formats
 
 | Format | Example |
 |---|---|
@@ -66,7 +162,7 @@ konstruct list -g          # List global skills
 | Local file | `file:./relative/path` |
 | Bare shorthand | `owner/repo` (defaults to GitHub) |
 
-## Supported agents
+## Supported Agents
 
 Konstruct installs skills into the appropriate directory for each agent:
 
