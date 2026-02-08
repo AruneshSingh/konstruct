@@ -47,18 +47,7 @@
         ]
       }],
       "@semantic-release/release-notes-generator",
-      [
-        "@semantic-release/npm",
-        {
-          "npmPublish": false
-        }
-      ],
-      [
-        "@semantic-release/exec",
-        {
-          "publishCmd": "npm publish --provenance --access public"
-        }
-      ],
+      "@semantic-release/npm",
       "@semantic-release/changelog",
       [
         "@semantic-release/git",
@@ -83,6 +72,7 @@
     "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^11.0.6",
+    "@semantic-release/npm": "^13.1.4",
     "@types/node": "^22.0.0",
     "@types/react": "^19.2.13",
     "semantic-release": "^24.2.9",
