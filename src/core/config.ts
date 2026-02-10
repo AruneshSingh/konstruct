@@ -187,6 +187,12 @@ export const AGENT_REGISTRY: AgentEntry[] = [
     globalSkillsDir: join(home, '.adal', 'skills'),
     detectInstalled: () => existsSync(join(home, '.adal')),
   },
+  {
+    slug: 'openclaw',
+    skillsDir: '.openclaw/skills',
+    globalSkillsDir: join(home, '.openclaw', 'skills'),
+    detectInstalled: () => existsSync(join(home, '.openclaw')),
+  },
 ];
 
 /** Quick lookup: slug → entry */

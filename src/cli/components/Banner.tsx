@@ -11,7 +11,7 @@ export function Banner() {
   return (
     <Box flexDirection="column" marginBottom={1}>
       <Text color="cyan" bold>{art}</Text>
-      <Text dimColor>  AI Skills Package manager for teams</Text>
+      <Text dimColor>  AI Skills Package manager. Built by Arunesh Singh</Text>
     </Box>
   );
 }
