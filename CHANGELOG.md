@@ -1,3 +1,10 @@
+## [0.1.3](https://github.com/AruneshSingh/konstruct/compare/v0.1.2...v0.1.3) (2026-02-18)
+
+
+### Bug Fixes
+
+* ensure manifest directory exists before writing skills.json ([ddbf621](https://github.com/AruneshSingh/konstruct/commit/ddbf621a49135de7c21a8cd6d31f5dca08894e1e))
+
 ## [0.1.2](https://github.com/AruneshSingh/konstruct/compare/v0.1.1...v0.1.2) (2026-02-10)
 
 
