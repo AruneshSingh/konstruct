@@ -1,4 +1,4 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join, basename } from 'node:path';
 import type { SkillsManifest, SkillEntry } from '../types/index.ts';
 import { exists } from '../utils/fs.ts';
@@ -43,6 +43,7 @@ export async function readManifest(cwd: string = process.cwd()): Promise<SkillsM
  * Write skills.json to cwd.
  */
 export async function writeManifest(manifest: SkillsManifest, cwd: string = process.cwd()): Promise<void> {
+  await mkdir(cwd, { recursive: true });
   const manifestPath = join(cwd, MANIFEST_FILENAME);
   await writeFile(manifestPath, JSON.stringify(manifest, null, 2) + '\n', 'utf-8');
 }
