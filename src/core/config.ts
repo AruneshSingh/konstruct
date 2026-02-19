@@ -28,6 +28,14 @@ interface AgentEntry {
   skillsDir: string;
   /** Absolute path where global skills live (undefined = global not supported). */
   globalSkillsDir: string | undefined;
+  /** Relative path from cwd for project-local settings (copy mode). */
+  settingsDir: string;
+  /** Absolute path where global settings live (copy mode). */
+  globalSettingsDir: string | undefined;
+  /** Absolute path to the agent's settings file (merge/replace mode). */
+  settingsFile?: string;
+  /** Absolute path to the agent's global settings file (merge/replace mode). */
+  globalSettingsFile?: string;
   /** Returns true when the agent appears to be installed on this machine. */
   detectInstalled: () => boolean;
 }
@@ -41,156 +49,210 @@ export const AGENT_REGISTRY: AgentEntry[] = [
     slug: 'claude',
     skillsDir: '.claude/skills',
     globalSkillsDir: join(claudeHome, 'skills'),
+    settingsDir: '.claude/settings',
+    globalSettingsDir: join(claudeHome, 'settings'),
+    settingsFile: join('.claude', 'settings.json'),
+    globalSettingsFile: join(claudeHome, 'settings.json'),
     detectInstalled: () => existsSync(claudeHome),
   },
   {
     slug: 'cursor',
     skillsDir: '.cursor/skills',
     globalSkillsDir: join(home, '.cursor', 'skills'),
+    settingsDir: '.cursor/settings',
+    globalSettingsDir: join(home, '.cursor', 'settings'),
     detectInstalled: () => existsSync(join(home, '.cursor')),
   },
   {
     slug: 'windsurf',
     skillsDir: '.windsurf/skills',
     globalSkillsDir: join(home, '.codeium', 'windsurf', 'skills'),
+    settingsDir: '.windsurf/settings',
+    globalSettingsDir: join(home, '.codeium', 'windsurf', 'settings'),
     detectInstalled: () => existsSync(join(home, '.codeium', 'windsurf')),
   },
   {
     slug: 'continue',
     skillsDir: '.continue/skills',
     globalSkillsDir: join(home, '.continue', 'skills'),
+    settingsDir: '.continue/settings',
+    globalSettingsDir: join(home, '.continue', 'settings'),
     detectInstalled: () => existsSync(join(home, '.continue')),
   },
   {
     slug: 'copilot',
     skillsDir: '.copilot/skills',
     globalSkillsDir: join(home, '.copilot', 'skills'),
+    settingsDir: '.copilot/settings',
+    globalSettingsDir: join(home, '.copilot', 'settings'),
     detectInstalled: () => existsSync(join(home, '.copilot')),
   },
   {
     slug: 'gemini',
     skillsDir: '.gemini/skills',
     globalSkillsDir: join(home, '.gemini', 'skills'),
+    settingsDir: '.gemini/settings',
+    globalSettingsDir: join(home, '.gemini', 'settings'),
     detectInstalled: () => existsSync(join(home, '.gemini')),
   },
   {
     slug: 'augment',
     skillsDir: '.augment/rules',
     globalSkillsDir: join(home, '.augment', 'rules'),
+    settingsDir: '.augment/settings',
+    globalSettingsDir: join(home, '.augment', 'settings'),
     detectInstalled: () => existsSync(join(home, '.augment')),
   },
   {
     slug: 'cline',
     skillsDir: '.cline/skills',
     globalSkillsDir: join(home, '.cline', 'skills'),
+    settingsDir: '.cline/settings',
+    globalSettingsDir: join(home, '.cline', 'settings'),
     detectInstalled: () => existsSync(join(home, '.cline')),
   },
   {
     slug: 'goose',
     skillsDir: '.goose/skills',
     globalSkillsDir: join(configHome, 'goose', 'skills'),
+    settingsDir: '.goose/settings',
+    globalSettingsDir: join(configHome, 'goose', 'settings'),
     detectInstalled: () => existsSync(join(configHome, 'goose')),
   },
   {
     slug: 'junie',
     skillsDir: '.junie/skills',
     globalSkillsDir: join(home, '.junie', 'skills'),
+    settingsDir: '.junie/settings',
+    globalSettingsDir: join(home, '.junie', 'settings'),
     detectInstalled: () => existsSync(join(home, '.junie')),
   },
   {
     slug: 'kiro',
     skillsDir: '.kiro/skills',
     globalSkillsDir: join(home, '.kiro', 'skills'),
+    settingsDir: '.kiro/settings',
+    globalSettingsDir: join(home, '.kiro', 'settings'),
     detectInstalled: () => existsSync(join(home, '.kiro')),
   },
   {
     slug: 'opencode',
     skillsDir: '.opencode/skills',
     globalSkillsDir: join(configHome, 'opencode', 'skills'),
+    settingsDir: '.opencode/settings',
+    globalSettingsDir: join(configHome, 'opencode', 'settings'),
     detectInstalled: () => existsSync(join(configHome, 'opencode')),
   },
   {
     slug: 'openhands',
     skillsDir: '.openhands/skills',
     globalSkillsDir: join(home, '.openhands', 'skills'),
+    settingsDir: '.openhands/settings',
+    globalSettingsDir: join(home, '.openhands', 'settings'),
     detectInstalled: () => existsSync(join(home, '.openhands')),
   },
   {
     slug: 'roo',
     skillsDir: '.roo/skills',
     globalSkillsDir: join(home, '.roo', 'skills'),
+    settingsDir: '.roo/settings',
+    globalSettingsDir: join(home, '.roo', 'settings'),
     detectInstalled: () => existsSync(join(home, '.roo')),
   },
   {
     slug: 'trae',
     skillsDir: '.trae/skills',
     globalSkillsDir: join(home, '.trae', 'skills'),
+    settingsDir: '.trae/settings',
+    globalSettingsDir: join(home, '.trae', 'settings'),
     detectInstalled: () => existsSync(join(home, '.trae')),
   },
   {
     slug: 'kode',
     skillsDir: '.kode/skills',
     globalSkillsDir: join(home, '.kode', 'skills'),
+    settingsDir: '.kode/settings',
+    globalSettingsDir: join(home, '.kode', 'settings'),
     detectInstalled: () => existsSync(join(home, '.kode')),
   },
   {
     slug: 'qwen-code',
     skillsDir: '.qwen/skills',
     globalSkillsDir: join(home, '.qwen', 'skills'),
+    settingsDir: '.qwen/settings',
+    globalSettingsDir: join(home, '.qwen', 'settings'),
     detectInstalled: () => existsSync(join(home, '.qwen')),
   },
   {
     slug: 'codex',
     skillsDir: '.codex/skills',
     globalSkillsDir: join(codexHome, 'skills'),
+    settingsDir: '.codex/settings',
+    globalSettingsDir: join(codexHome, 'settings'),
     detectInstalled: () => existsSync(codexHome) || existsSync('/etc/codex'),
   },
   {
     slug: 'amp',
     skillsDir: '.agents/skills',
     globalSkillsDir: join(configHome, 'agents', 'skills'),
+    settingsDir: '.agents/settings',
+    globalSettingsDir: join(configHome, 'agents', 'settings'),
     detectInstalled: () => existsSync(join(configHome, 'agents')),
   },
   {
     slug: 'kilo',
     skillsDir: '.kilocode/skills',
     globalSkillsDir: join(home, '.kilocode', 'skills'),
+    settingsDir: '.kilocode/settings',
+    globalSettingsDir: join(home, '.kilocode', 'settings'),
     detectInstalled: () => existsSync(join(home, '.kilocode')),
   },
   {
     slug: 'pochi',
     skillsDir: '.pochi/skills',
     globalSkillsDir: join(home, '.pochi', 'skills'),
+    settingsDir: '.pochi/settings',
+    globalSettingsDir: join(home, '.pochi', 'settings'),
     detectInstalled: () => existsSync(join(home, '.pochi')),
   },
   {
     slug: 'neovate',
     skillsDir: '.neovate/skills',
     globalSkillsDir: join(home, '.neovate', 'skills'),
+    settingsDir: '.neovate/settings',
+    globalSettingsDir: join(home, '.neovate', 'settings'),
     detectInstalled: () => existsSync(join(home, '.neovate')),
   },
   {
     slug: 'mux',
     skillsDir: '.mux/skills',
     globalSkillsDir: join(home, '.mux', 'skills'),
+    settingsDir: '.mux/settings',
+    globalSettingsDir: join(home, '.mux', 'settings'),
     detectInstalled: () => existsSync(join(home, '.mux')),
   },
   {
     slug: 'zencoder',
     skillsDir: '.zencoder/skills',
     globalSkillsDir: join(home, '.zencoder', 'skills'),
+    settingsDir: '.zencoder/settings',
+    globalSettingsDir: join(home, '.zencoder', 'settings'),
     detectInstalled: () => existsSync(join(home, '.zencoder')),
   },
   {
     slug: 'adal',
     skillsDir: '.adal/skills',
     globalSkillsDir: join(home, '.adal', 'skills'),
+    settingsDir: '.adal/settings',
+    globalSettingsDir: join(home, '.adal', 'settings'),
     detectInstalled: () => existsSync(join(home, '.adal')),
   },
   {
     slug: 'openclaw',
     skillsDir: '.openclaw/skills',
     globalSkillsDir: join(home, '.openclaw', 'skills'),
+    settingsDir: '.openclaw/settings',
+    globalSettingsDir: join(home, '.openclaw', 'settings'),
     detectInstalled: () => existsSync(join(home, '.openclaw')),
   },
 ];
@@ -276,6 +338,52 @@ export function getAgentSkillDirs(
     }
   }
   return dirs;
+}
+
+/**
+ * Given a list of agent slugs, return the settings directories for each one.
+ * Mirrors getAgentSkillDirs but uses settingsDir / globalSettingsDir.
+ */
+export function getAgentSettingsDirs(
+  agents: string[],
+  global: boolean = false,
+  cwd: string = process.cwd(),
+  customPath?: string
+): string[] {
+  if (customPath) return [customPath];
+
+  const dirs: string[] = [];
+  for (const slug of agents) {
+    const entry = AGENT_MAP.get(slug);
+    if (global) {
+      if (entry?.globalSettingsDir) dirs.push(entry.globalSettingsDir);
+    } else {
+      dirs.push(join(cwd, entry?.settingsDir ?? `.${slug}/settings`));
+    }
+  }
+  return dirs;
+}
+
+/**
+ * Return agent slugs paired with their settings file paths for merge-capable agents.
+ * Only includes agents that have a settingsFile / globalSettingsFile defined.
+ */
+export function getAgentSettingsFiles(
+  agents: string[],
+  global: boolean = false,
+  cwd: string = process.cwd(),
+): { slug: string; filePath: string }[] {
+  const result: { slug: string; filePath: string }[] = [];
+  for (const slug of agents) {
+    const entry = AGENT_MAP.get(slug);
+    if (!entry) continue;
+    if (global) {
+      if (entry.globalSettingsFile) result.push({ slug, filePath: entry.globalSettingsFile });
+    } else {
+      if (entry.settingsFile) result.push({ slug, filePath: join(cwd, entry.settingsFile) });
+    }
+  }
+  return result;
 }
 
 // ---------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 import { render, Box, useApp } from 'ink';
 import { useState, useCallback, useEffect } from 'react';
 import { writeManifest, readManifest } from '../../core/manifest.ts';
+import { writeSettingsManifest, readSettingsManifest } from '../../core/settings-manifest.ts';
 import { readConfig, writeConfig, KONSTRUCT_DIR } from '../../core/config.ts';
 import type { KonstructConfig } from '../../types/index.ts';
 import { basename } from 'node:path';
@@ -46,6 +47,18 @@ function InitApp({ options }: { options: InitOptions }) {
           cwd,
         );
         msgs.push({ variant: 'success', text: `Created ${scope} skills.json` });
+      }
+
+      // --- settings.json ---
+      const existingSettingsManifest = await readSettingsManifest(cwd);
+      if (existingSettingsManifest) {
+        msgs.push({ variant: 'warn', text: `${scope} settings.json already exists — skipping.` });
+      } else {
+        await writeSettingsManifest(
+          { name: basename(cwd), version: '1.0.0', settings: {} },
+          cwd,
+        );
+        msgs.push({ variant: 'success', text: `Created ${scope} settings.json` });
       }
 
       // --- konstruct.config.json ---

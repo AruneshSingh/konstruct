@@ -11,6 +11,11 @@ import { removeCommand } from './commands/remove.tsx';
 import { listCommand } from './commands/list.tsx';
 import { updateCommand } from './commands/update.tsx';
 import { defaultsCommand } from './commands/defaults.tsx';
+import { settingsAddCommand } from './commands/settings-add.tsx';
+import { settingsInstallCommand } from './commands/settings-install.tsx';
+import { settingsRemoveCommand } from './commands/settings-remove.tsx';
+import { settingsListCommand } from './commands/settings-list.tsx';
+import { settingsUpdateCommand } from './commands/settings-update.tsx';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -89,6 +94,51 @@ program
   .command('defaults')
   .description('View and update default agent preferences')
   .action(defaultsCommand);
+
+// ---------------------------------------------------------------------------
+// Settings subcommand group
+// ---------------------------------------------------------------------------
+
+const settings = program
+  .command('settings')
+  .description('Manage settings packages for AI agents');
+
+settings
+  .command('add <source>')
+  .description('Add a settings package from a git or local source')
+  .option('-g, --global', 'Install globally')
+  .option('--user', 'Add as a userSettings entry (local, never auto-updated)')
+  .option('--path <path>', 'Custom installation path')
+  .option('-s, --ssh', 'Use SSH for cloning (default: HTTPS with auto-retry on auth failure)')
+  .option('--settings <names...>', 'Install specific settings package(s) by name, skipping the selection prompt')
+  .option('--strategy <strategy>', 'Apply strategy: copy, merge, or replace')
+  .action(settingsAddCommand);
+
+settings
+  .command('install')
+  .description('Install all settings packages from settings.json')
+  .option('-g, --global', 'Install globally (~/) instead of project-local')
+  .option('-s, --ssh', 'Use SSH for cloning (default: HTTPS with auto-retry on auth failure)')
+  .action(settingsInstallCommand);
+
+settings
+  .command('remove <names...>')
+  .description('Remove one or more settings packages by name')
+  .option('-g, --global', 'Remove from global (~/) directories instead of project-local')
+  .action(settingsRemoveCommand);
+
+settings
+  .command('list')
+  .description('List all settings packages in the current manifest')
+  .option('-g, --global', 'List settings from the global manifest instead of project-local')
+  .action(settingsListCommand);
+
+settings
+  .command('update')
+  .description('Re-install git settings at their manifest refs (skips userSettings)')
+  .option('-g, --global', 'Update in global (~/) directories instead of project-local')
+  .option('-s, --ssh', 'Use SSH for cloning (default: HTTPS with auto-retry on auth failure)')
+  .action(settingsUpdateCommand);
 
 program.parseAsync().catch((err) => {
   console.error(pc.red('\u2717'), err instanceof Error ? err.message : String(err));
