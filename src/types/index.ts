@@ -81,3 +81,54 @@ export interface InstallResult {
   paths: string[];
   error?: string;
 }
+
+// ---------------------------------------------------------------------------
+// Settings types
+// ---------------------------------------------------------------------------
+
+/** How a settings package is applied to an agent. */
+export type SettingsStrategy = 'copy' | 'merge' | 'replace';
+
+/**
+ * A discovered settings package parsed from a SETTINGS.md file.
+ */
+export interface SettingsPackage {
+  name: string;
+  description: string;
+  /** Absolute path to the directory containing SETTINGS.md */
+  path: string;
+  metadata?: Record<string, unknown>;
+}
+
+/**
+ * Settings entry in manifest with source, optional custom path, and strategy.
+ */
+export interface SettingsEntry {
+  source: string;
+  path?: string;
+  strategy?: SettingsStrategy;
+}
+
+/**
+ * The settings.json manifest — the declarative list of settings packages for a project.
+ */
+export interface SettingsManifest {
+  name: string;
+  version: string;
+  /** Git-based settings, updated by `konstruct settings update` */
+  settings: Record<string, SettingsEntry>;
+  /** Local user-created settings, never auto-updated */
+  userSettings?: Record<string, SettingsEntry>;
+}
+
+/**
+ * Result of a single settings installation.
+ */
+export interface SettingsInstallResult {
+  success: boolean;
+  settings: string;
+  /** All paths the settings were applied to (one per agent) */
+  paths: string[];
+  strategy: SettingsStrategy;
+  error?: string;
+}
